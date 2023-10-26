@@ -1,0 +1,83 @@
+{% extends 'app_seguro/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block titulo %} Seguros - Nuevo Beneficiario {% endblock%}
+{% block content %}
+<section class="page-section cta">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <div class="cta-inner bg-faded  rounded">
+          <h2 class="section-heading mb-4">
+            <span class="section-heading-upper">Asignar Nuevos Beneficiarios </span>
+            <span class="section-heading-upper">Titular {{titular.id}}</span>
+          </h2>
+          {% if messages %}
+          {% for message in messages %}
+          <p {% if message.tags %} class="alert alert-danger" role="alert" {% endif %}>{{ message }}</p>
+          {% endfor %}
+          {% endif %}
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{titular.apellido}}, {{titular.nombre}}</h5>
+              <p> <strong>CUIL: </strong> {{titular.cuil}}</p>
+              <p> <strong>Fecha Nac.: </strong> {{titular.fecha_nacimiento|date:"d/m/Y"}}
+                <strong>Edad: </strong> {{titular.edad}} años
+                <strong>Sexo: </strong> {{titular.get_sexo_display}}
+              </p>
+              <p> <strong>Domicilio: </strong> {{titular.domicilio}}
+                <strong>Departamento: </strong> {{titular.departamento.nombre}}
+                <strong>Localidad: </strong> {{titular.localidad.nombre}}
+                <strong>C.P.: </strong> {{titular.cp}}
+              </p>
+              <p> <strong>E-Mail </strong> {{titular.email}} </p>
+              <a href="/" class="card-link">Inicio</a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              <h2 class="section-heading mb-4">
+                <span class="section-heading-upper">Nuevo Beneficiario </span>
+              </h2>
+              <form method="POST">
+                {% csrf_token %}
+                {{form_Beneficiario | crispy}}
+                <button type="submit" class="btn btn-outline-primary btn-sm">Registrar Nuevo Beneficiario</button>
+                &nbsp; &nbsp;
+                <button onclick="goBack()" class="btn btn-outline-info btn-sm">Atrás</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', event => {
+    const departamentoSelect = document.getElementById('id_departamento'); // Selecciona el elemento de departamento
+    const localidadField = $('#id_localidad'); // Cambia 'id_localidad' al ID real del campo Localidad
+    departamentoSelect.addEventListener('change', function () {
+      const selectedDepartamentoId = this.value; // Obtiene el valor seleccionado
+      // Hacer una petición AJAX para obtener las localidades del departamento seleccionado      
+      $.get('/get_localidades/' + selectedDepartamentoId + '/', function (data) {
+        localidadField.empty();
+        data.forEach(function (localidad) {
+          localidadField.append($('<option>', {
+            value: localidad.id,
+            text: localidad.nombre
+          }));
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}

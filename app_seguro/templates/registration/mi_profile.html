@@ -1,0 +1,87 @@
+{% extends "app_seguro/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %} 
+
+{% block title %} Capresca - Mi Perfil {% endblock %} 
+    
+{% block subtitulo %}  {% endblock%} 
+
+{% block content %} 
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-7 mx-auto">
+                <div class="cta-inner bg-faded">     
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                               USUARIO                                                              
+                            </button>
+                          </h2>
+                          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <img src="{{ usuario_log.image.url }}" alt="Imagen de Perfil" class="img-thumbnail img-responsive" style="width: 200px; height: 150px;">
+                                <p> <b>Usuario:</b> {{usuario.username}} <b>desde</b> {{usuario.date_joined }}</p>  
+                                <p> <b>CUIL:</b> {{usuario.profile.cuil}}</p>
+                                <p> <b>Apellido:</b> {{usuario.last_name}}</p>  
+                                <p> <b>Nombre:</b> {{usuario.first_name}}</p>  
+                                <p> <b>EMail:</b> {{usuario.email}}</p>  
+                                <p> <b>Activo:</b> {% if usuario.is_active %}SI {% else %} NO {% endif%} {{usuario.id}}</p>                                
+                                
+                            </div>
+                          </div>
+                        </div>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                              PERFIL
+                            </button>
+                          </h2>
+                          <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">                                  
+                                <p> <b>Dirección:</b> {{usuario_log.addres}}</p>  
+                                <p> <b>location:</b> {{usuario_log.location}}</p>  
+                                <p> <b>telephone:</b> {{usuario_log.telephone}}</p>  
+                            </div>
+                          </div>
+                        </div>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              TRABAJO
+                            </button>
+                          </h2>
+                          <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">                                                              
+                                <p><b>S.A.F.  Asignados </b></p>  
+                                <ul>
+                                    {% for saf in safs %}
+                                      <li>{{ saf.nros }} - {{ saf.nombre }}</li>
+                                    {% empty %}
+                                      <li>No tienes SAFs asociados.</li>
+                                    {% endfor %}
+                                  </ul>     
+                                  <p><b>GRUPO Asignado </b></p>    
+                                  <ul>
+                                    {% for group in user_groups %}
+                                      <li>{{ group.name }}</li>
+                                    {% empty %}
+                                      <li>No estás en ningún grupo.</li>
+                                    {% endfor %}
+                                  </ul>                                  
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <p class="mb-0">                         
+                        <a href="{% url 'index' %}" class="card-link"> <i class="fa-solid fa-house"></i>Inicio</a>
+                    </p>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>  
+
+{% endblock%} 

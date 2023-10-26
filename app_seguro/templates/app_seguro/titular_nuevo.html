@@ -1,0 +1,58 @@
+{% extends  'app_seguro/base.html' %}
+{% load crispy_forms_tags %}     
+{% load static %}
+
+{% block titulo %} Seguros - Nuevo Titular {% endblock%}
+
+{% block content %}
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-7 mx-auto">
+                <div class="cta-inner bg-faded  rounded">
+                    <h2 class="section-heading mb-1">
+                        <span class="section-heading-upper">Nuevo Titular</span>                        
+                    </h2>
+                    {% if messages %}                                             
+                          {% for message in messages %}
+                            <p {% if message.tags %} class="alert alert-danger" role="alert"{% endif %}>{{ message }}</p>
+                          {% endfor %}                        
+                    {% endif %}                                            
+                    <div class="card">
+                    </div>
+                        <form method="POST">
+                            {% csrf_token %}                        
+                            {{ formtitular | crispy }}                                                                                      
+                            <button type="submit" class="btn btn-outline-primary">Registrar Titular</button>
+                            <a href="{% url 'titulares' %}" class="btn btn-warning">Cancelar</a>                              
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script>
+window.addEventListener('DOMContentLoaded', event => {
+    const departamentoSelect = document.getElementById('id_departamento'); // Selecciona el elemento de departamento
+    const localidadField = $('#id_localidad'); // Cambia 'id_localidad' al ID real del campo Localidad
+    departamentoSelect.addEventListener('change', function() {
+        const selectedDepartamentoId = this.value; // Obtiene el valor seleccionado
+      // Hacer una petición AJAX para obtener las localidades del departamento seleccionado      
+      $.get('/get_localidades/' + selectedDepartamentoId + '/', function(data) {  
+        localidadField.empty();
+        data.forEach(function(localidad) {
+          localidadField.append($('<option>', {
+            value: localidad.id,
+            text: localidad.nombre
+          }));
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}
+
+

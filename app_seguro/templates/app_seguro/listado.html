@@ -1,0 +1,56 @@
+{% extends 'app_seguro/base.html' %}
+
+{% load static %}
+
+{% block titulo %} Seguros - Capresca {% endblock%}
+
+{% block content %}
+
+<section class="page-section cta">
+  <div class="col-xl-12 mx-auto">
+    {% if messages %}
+    {% for message in messages %}
+    <p {% if message.tags %} class="alert alert-danger" role="alert" {% endif %}>{{ message }}</p>
+    {% endfor %}
+    {% endif %}
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Listado de Seguros</h5>
+        <div class="accordion" id="accordionExample">
+          {% for seguro in seguros %}
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-{{seguro.id}}">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapse-{{seguro.id}}" aria-expanded="false" aria-controls="collapse-{{seguro.id}}">
+                <b>{{seguro.nombre | upper}} </b>
+              </button>
+            </h2>
+            <div id="collapse-{{seguro.id}}" class="accordion-collapse collapse show"
+              aria-labelledby="heading-{{seguro.id}}" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <strong>Descripción </strong>
+                <p> {{seguro.descripcion|safe}}</p>
+
+                <strong>Legal </strong>
+                <p> {{seguro.legal}}</p>
+
+                <strong>Activo </strong>
+                <p> {% if seguro.activo %} SI {% else %} No {% endif %}</p>
+
+                <strong>Requisitos de Ingreso </strong>
+                <p> {{seguro.requisito_ingreso|safe}}</p>
+
+                <strong>Requisitos de Tramitación </strong>
+                <p> {{seguro.requisito_cobro|safe}}</p>
+
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

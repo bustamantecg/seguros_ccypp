@@ -1,0 +1,41 @@
+{% extends 'app_seguro/base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% block titulo %} Editar Cargadores {% endblock%}
+
+{% block content %}
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 mx-auto">
+                <div class="cta-inner bg-faded  rounded">
+                    <h2 class="section-heading mb-4">
+                        <span class="section-heading-upper text-center">Edición de Cargador [id: {{cargador_id}}]</span>
+                    </h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"></h5>
+                            <p class="card-text">Usted es responsables por las Modificaciones realizadas</p>
+                            <form method="POST">
+                                {% csrf_token %}
+                                {{formcargador | crispy}}
+                                <button type="submit" class="btn btn-outline-success btn-sm" >Editar</button> &nbsp;&nbsp;
+                                <button onclick="goBack()" class="btn btn-outline-info btn-sm">Atrás</button>                                                                  
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Script de JavaScript para manejar el botón de regreso -->
+<script>
+    function goBack() {
+        window.history.back();
+    }
+  </script>
+{% endblock %}

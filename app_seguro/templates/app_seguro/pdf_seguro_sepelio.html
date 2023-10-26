@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+    .img-comprobante {
+        width: 250px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .head {
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    #comprobante thead tr {
+        text-align: left;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+        padding-top: 4px;
+    }
+
+    #comprobante tbody tr {
+        padding: 0;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .text-left {
+        text-align: left;
+    }
+</style>
+
+<body>
+    <img src="{{logo}}" class="img-comprobante">
+
+    <h1 class="head" style="font-size: 18px; padding-top: 1px; padding-bottom: 1px;">SUBGERENCIA DE SEGUROS</h1>
+    <hr color="blue">
+    <p class="head" style="font-size: 16px; padding-top: 1px">Comprobante Seguro de Sepelio</p>
+    <hr color="blue">
+    <table id="comprobante">
+        <tbody>
+            <tr>
+                <th class="text-left" style="font-size: 14px;">Titular: {{titular.apellido}}, {{titular.nombre}}</th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">Tipo y Nro. de Doc: {{titular.tipodoc}}: {{titular.nro}}
+                    -- CUIL: {{titular.cuil}}</th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">Fecha de Nac: {{titular.fecha_nacimiento}}</th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">Estado Civil: {{titular.estado_civil.nombre}}</th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">Domicilio: {{titular.domicilio}}</th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">Localidad: {{titular.localidad.nombre}}</th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">Departamento: {{titular.departamento.nombre}}</th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">Código Postal: {{titular.cp}}</th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">Organismo: {{titular.organismo.nombre}}</th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">S.A.F.: {{titular.safs.nombre}} ({{titular.safs.nros}})
+                </th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">Discapacidad: {% if titular.discapacidad %} SI {% else %}
+                    NO {% endif %}</th>
+            </tr>
+            <tr>
+                <th class="text-left" style="font-size: 12px;">SITUACIÓN: {{titular.situacion}}</th>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr color="blue">
+    <p>Registrado: {{titular.created}} &nbsp;&nbsp;Cargador: {{titular.usuario}}, {{titular.usuario.last_name}}</p>
+    <hr color="blue">
+    {% if beneficiarios %}
+    <table id="comprobante" style="margin-top: 2px; font-size: 12px;">
+        <head>
+            <tr>
+                <td>ID</td>
+                <td>Tipo y Nro. Doc.</td>
+                <td>Beneficiario</td>
+                <td>Parentesco</td>
+                <td>Registrado</td>
+            </tr>
+        </head>
+        {% for benef in beneficiarios %}
+        <tr>
+            <td width="8%"> {{benef.id}} </td>
+            <td width="20%"> {{benef.tipodoc}}:{{benef.nro}} </td>
+            <td width="40%"> {{benef.apellido}}, {{benef.nombres}} </td>
+            <td width="15%"> {{benef.parentescos.nombre}} </td>
+            <td width="10%"> {{benef.created}} </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p class="text-center" style="font-size: 16px;">No Registra Beneficiarios</p>
+    {% endif %}
+
+    <table style="margin-top: 2px;">
+        <thead>
+            <tr>
+                <th class="text-center">CAJA DE CREDITOS Y PRESTACIONES CATAMARCA</th>
+            </tr>
+            <tr>
+                <th class="text-center">San Fernando del Valle de Catamarca, {{fecha_actual}}</th>
+            </tr>
+            <tr>
+                <th class="text-center">Mota Botello 854</th>
+            </tr>
+        </thead>
+    </table>
+
+</html>

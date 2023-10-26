@@ -1,0 +1,25 @@
+{% extends "app_seguro/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}     
+{% block title %} Contacto Recibido {% endblock %} 
+{% block subtitulo %}  {% endblock%} 
+
+{% block content %} 
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <h2 class="section-heading mb-5">
+                        <span class="section-heading-upper">Contacto Enviado</span>                        
+                    </h2>
+                    <h2 class="section-heading mb-5">
+                        <span class="section-heading-upper">Tu mensaje fue recibido.</span>
+                    </h2>
+                    <p>Gracias por contactarte con nosotros.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock%} 

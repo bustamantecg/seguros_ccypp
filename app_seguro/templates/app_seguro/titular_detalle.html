@@ -1,0 +1,163 @@
+{% extends 'app_seguro/base.html' %}
+
+{% load static %}
+
+{% block titulo %}Titular -Detalles{% endblock%}
+
+{% block content %}
+
+          {% if messages %}
+            {% for message in messages %}
+              <p {% if message.tags %} class="alert alert-danger" role="alert" {% endif %}>{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+
+          <div class="card">
+            <h5 class="card-header">Titular Detalle</h5>
+            <div class="card-body">
+
+              <div class="accordion" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                      aria-controls="panelsStayOpen-collapseOne">
+                      <strong> {{titular.apellido}}, {{titular.nombre}}</strong>
+                    </button>
+                  </h2>
+                  <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                    aria-labelledby="panelsStayOpen-headingOne">
+                    <div class="accordion-body">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col">
+                            <p> <strong>Tipo de Doc. y Nro.</strong> {{titular.tipodoc}}: &nbsp;{{titular.nro}} </p>
+                            <p> <strong>CUIL </strong> {{titular.cuil}} </p>
+                            <p> <strong>Fecha Nac.</strong> {{titular.fecha_nacimiento|date:"d/m/Y"}} </p>
+                            <p> <strong>E-Mail </strong> {{titular.email}} </p>
+                            <p><strong>Domicilio </strong> {{titular.domicilio}} </p>                                                         
+                          </div>
+
+                          <div class="col">
+                            <p> <strong>Estado Civil </strong> {{titular.estado_civil.nombre}} </p>
+                            <p> <strong>Género </strong> {{titular.get_sexo_display}} </p>
+                            <p><strong>Edad </strong> {{titular.edad}} años</p>
+                            <p> <strong>Vive </strong> {% if titular.vive %} Si {% else %} <strong><span
+                              style="color: c81d11;">NO</span> </strong> {% endif %} 
+                            </p>                                
+                          </div>
+
+                          <div class="col">
+                            <p> <strong>Registrado </strong> {{titular.created|date:"d/m/Y"}}</p>
+                            <p> <strong>Editado </strong> {{titular.updated|date:"d/m/Y"}} &nbsp;</p>
+                            <p> <strong>Discapacidad </strong> {% if titular.discapacidad %} Si {% else %}NO {% endif %}</p>
+                            <p></p><strong>Situación </strong> {{titular.situacion}} </p>  
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                      aria-controls="panelsStayOpen-collapseTwo">
+                      <strong>Lugar de Trabjo</strong>
+                    </button>
+                  </h2>
+                  <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
+                    aria-labelledby="panelsStayOpen-headingTwo">
+                    <div class="accordion-body">
+                      <p><strong>{{titular.organismo.nombre}}</strong> </p>
+                      <p> {{titular.organismo.domicilio}}</p>
+                      <p> Registrado por: {{titular.usuario.username}}  &nbsp;&nbsp;&nbsp; {{titular.created|date:"d/m/Y"}}</p>
+                      <p><strong>S.A.F</strong> ({{titular.safs_id}}) {{titular.safs.nombre}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                      aria-controls="panelsStayOpen-collapseThree">
+                      <strong>Beneficiarios</strong>                      
+                    </button>
+                  </h2>
+                  <br>
+                  
+                  <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
+                    aria-labelledby="panelsStayOpen-headingThree">
+                    <div class="accordion-body">
+                      <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover" width="80%" cellspacing="0">
+                          <thead>
+                            <tr>
+                              <th>ID</th>                                        
+                              <th>Beneficiarios</th>  
+                              <th>Tipo de Doc. y Nro.</th>  
+                              <th>Parentesco</th>                            
+                              <th>Registrado</th>
+                              <th>Editado</th>                                                                                                     
+                              <th>Cargador</th>
+                              <th>Seguros</th>
+                              <th>Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% if beneficiarios %}
+                            {% for benef in beneficiarios %}
+                            <tr>
+                              <td>{{benef.id}}</td>
+                              <td>{{benef.apellido}}, {{benef.nombres}}</td>
+                              <td>{{benef.tipodoc.nombre}}: {{benef.nro}}</td>
+                              <td>{{benef.parentescos.nombre}}</td>                                                                    
+                              <td>{{benef.created}}</td>  
+                              <td>{{benef.updated}}</td>
+                              <td>{{benef.operador.username}}</td>
+                              <td> <ul class="list-group">
+                                  {% if benef.seguro_vida %} <li style="font-size:small">Seguro de Vida</li> {% endif %}
+                                  {% if benef.seguro_facultativo %} <li style="font-size:small">Seguro Facultativo</li> {% endif %}
+                                  {% if benef.seguro_sepelio %} <li style="font-size:small">Seguro Sepelio</li> {% endif %}
+                                  {% if benef.seguro_conyuge %} <li style="font-size:small">Seguro Conyuge</li> {% endif %}
+                                  {% if benef.subsidio_proteccion_flia %} <li style="font-size:small">Subsidio Protección Flia.</li> {% endif %}
+                                </ul>
+                              </td>       
+                              <td>  
+                                <a href="{% url 'beneficiario_editar'  benef.id %}" class="btn btn-outline-success btn-sm">Editar</a>
+                                
+                                <form method="POST" action="{% url 'beneficiario_eliminar' benef.id %}">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn btn-danger btn-sm" title="Elimina Beneficiario">Eliminar</button>
+                                </form>
+                              </td>                             
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                              <td align="center" colspan="9">No Registra Beneficiarios</td>
+                            </tr>
+                            {% endif %}
+                          </tbody>
+                        </table>
+                        <a href="{% url 'beneficiario_nuevo'  titular.id %}" class="btn btn-outline-success btn-sm">Nuevo Beneficiario</a>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button onclick="goBack()" class="btn btn-outline-info btn-sm">Atrás</button>
+            </div>
+          </div>
+
+<!-- Script de JavaScript para manejar el botón de regreso -->
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+{% endblock %}

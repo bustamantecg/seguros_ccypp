@@ -1,0 +1,59 @@
+{% extends "app_seguro/base.html" %}
+{% load static %}
+{% block title %} Capresca - Seguros {% endblock %} 
+{% block subtitulo %} Seguros CCyPP {% endblock%} 
+{% block content %}
+<section class="page-section clearfix">
+    <div class="container">
+        <div class="intro">
+            <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'assets/img/empleados.jpg' %}" alt="..." />
+            <div class="intro-text left-0 text-left bg-faded p-5 rounded">
+                <h2 class="section-heading mb-1">
+                    <span class="section-heading-upper text-center">Seguros</span>                        
+                </h2>                
+                    {% if seguros %}
+                    <ul class="list-group list-group-flush">
+                       {% for segu in seguros %}                          
+                          <li class="list-group-item list-group-item-success">{{segu.nombre}}</li>
+                       {% endfor %}
+                    </ul>
+                    {% endif %}                                
+                <div class="intro-button mx-auto text-center"><a class="btn btn-primary btn-xl" href="{% url 'seguros' %}">
+                    <i class="fa-solid fa-list"></i>  Más Información</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 mx-auto">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <h2 class="section-heading mb-1">
+                        <span class="section-heading-upper">Tramites</span>                        
+                    </h2>
+                    <p class="mb-0">Todos los Tramites relacionados al cobro de los Seguros, son realizados personalmente en nuestra Institución</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 mx-auto">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <h2 class="section-heading mb-1">
+                        <span class="section-heading-upper">Códigos de Descuentos que figuran en el Recibo de Sueldo</span>                        
+                    </h2>
+                </div>             
+                <div class="cta-inner bg-faded text-left rounded">
+                    <p class="mb-0 text-left"> 125 --> Seguro de Vida Obligatorio</p>
+                    <p class="mb-0 text-left"> 115 --> Seguro de Sepelio</p>
+                </div>                     
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock%}

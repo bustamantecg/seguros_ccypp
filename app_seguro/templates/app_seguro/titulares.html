@@ -1,0 +1,135 @@
+{% extends 'app_seguro/base.html' %}
+{% load static %}
+{% block titulo %}Titulares de Seguros{% endblock%}
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Busquedas de Titulares  -  Encontrados [{{encontradas}}]</h6>
+            <a href="{% url 'titular_nuevo'%}" class="btn btn-outline-success btn-sm">Nuevo Titular</a>
+           </div>
+           <div class="card-body">           
+               <form class="row g-3" method="POST">
+                   <div class="container">
+                       <div class="row">                        
+                           <div class="col">
+                               <div class="form-check form-check-inline">
+                                   <input class="form-check-input" type="radio" name="opcion" id="idtitular" value="idtitular">
+                                   <label class="form-check-label" for="idtitular">ID Titular</label>
+                               </div>
+                               <div class="form-check form-check-inline">
+                                   <input class="form-check-input" type="radio" name="opcion" id="dni" value="dni" checked>
+                                   <label class="form-check-label" for="dni">D.N.I.</label>
+                               </div>
+                               <div class="form-check form-check-inline">
+                                   <input class="form-check-input" type="radio" name="opcion" id="cuil" value="cuil">
+                                   <label class="form-check-label" for="cuil">CUIL</label>
+                               </div>
+                               <div class="form-check form-check-inline">
+                                   <input class="form-check-input" type="radio" name="opcion" id="apenom" value="apenom">
+                                   <label class="form-check-label" for="apenom">Apellido - Nombre</label>
+                               </div>
+                               <div class="form-check form-check-inline">
+                                   <input class="form-check-input" type="radio" name="opcion" id="email" value="email">
+                                   <label class="form-check-label" for="email" >E-Mail</label>
+                               </div>                              
+                           </div>
+                       </div>
+                       <div class="row">
+                           <div class="col-auto">
+                               <label>Ingrese Dato <input type="text" placeholder="Buscar..." name="buscar" value="{{request.POST.buscar}}"> </label>
+                           </div>
+                           <div class="col-auto">
+                               <button type="submit" class="btn btn-primary mb-3 btn-sm" data-toggle="modal" data-target="#ventana"
+                                       title="Seleccione opción de busqueda e ingrese el dato">Buscar
+                               </button>
+                           </div>
+                       </div>
+                   </div>
+                   {% csrf_token %}
+               </form>
+
+       {% if titulares %}
+       <div class="table-responsive">
+           <table class="table table-bordered table-striped table-hover"  width="80%" cellspacing="0">
+               <thead>
+               <tr>
+                   <th>Acciones</th> 
+                   <th>Titular Nro</th>                    
+                   <th>SAF Nro</th>  
+                   <th>Titular</th> 
+                   <th>CUIL</th> 
+                   <th>Situación</th>
+                   <th>Fec. Nac.</th> 
+                   <th>Edad</th> 
+                   <th>Alta</th> 
+                   <th>Vive</th> 
+                   <th>Discap.</th> 
+                   <th>Imprimir</th> 
+               </tr>
+               </thead>
+               <tbody>
+               {% for titu in titulares %}
+               <tr>
+                   <td>
+                        <a href="{% url 'titular_detalle' titu.id %}"  class="btn btn-info mb-3 btn-sm"   
+                            title="Detalles">
+                            <i class="fa-regular fa-eye"></i>                           
+                        </a>
+
+                        <a href="{% url 'titular_editar' titu.id %}" class="btn btn-warning mb-3 btn-sm"
+                          title="Editar Datos del Titular">
+                          <i class="fa-regular fa-pen-to-square"></i>
+                        </a>
+                   </td>
+                   <td>{{titu.id}}</td>
+                   <td>{{titu.safs.id}}</td>
+                   <td>{{titu.apellido|upper}}, {{titu.nombre}} </td>
+                   <td>{{titu.cuil}}</td>
+                   <td>{{titu.situacion}}</td>
+                   <td>{{titu.fecha_nacimiento|date:"d/m/Y"}}</td>
+                   <td>{{titu.edad}}</td>
+                   <td>{{titu.created|date:"d/m/Y"}}</td>
+                   <td>{% if titu.vive %} Si {% else %} <strong><span style="color: c81d11;">No</span> </strong> {% endif %} </td>
+                   <td>{% if titu.discapacidad %} <strong><span style="color: #105CB6;">Si</span> </strong> {% else %} No{% endif %} </td>
+                   <td>
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">                     
+                        <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Imprimir">
+                            <i class="fa-solid fa-print"></i>                            
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'Pdf_comprobante_titular' titu.id %}" target="_blank"><i class="fa-regular fa-file-pdf"> </i>&emsp;Seg. Comprobante Titular</a></li>
+                            <li><a class="dropdown-item" href="{% url 'pdf_seguro_vida' titu.id %}"         target="_blank"><i class="fa-regular fa-file-pdf"> </i>&emsp;Seg. de Vida Obligatorio</a></li>
+                            <li><a class="dropdown-item" href="{% url 'pdf_seguro_sepelio' titu.id%}"       target="_blank"><i class="fa-regular fa-file-pdf"> </i>&emsp;Seg. de Sepelio</a></li>
+                            <li><a class="dropdown-item" href="{% url 'pdf_seguro_facultativo' titu.id%}"   target="_blank"><i class="fa-regular fa-file-pdf"> </i>&emsp;Seg. Facultativo Optativo</a></li>
+                            <li><a class="dropdown-item" href="{% url 'pdf_seguro_conyuge' titu.id%}"       target="_blank"><i class="fa-regular fa-file-pdf"> </i>&emsp;Seg. de Vida Conyuge</a></li>
+                            <li><a class="dropdown-item" href="{% url 'pdf_seguro_familia' titu.id%}"       target="_blank"><i class="fa-regular fa-file-pdf"> </i>&emsp;Seg. de Protección a la Familia</a></li>
+                            <li><a class="dropdown-item" href="{% url 'pdf_seguro_todos' titu.id%}"         target="_blank"><i class="fa-regular fa-file-pdf"> </i>&emsp;Seg. Comprobante General</a></li>
+                            <li><a class="dropdown-item" href="{% url 'email_comprobante_seguro' titu.id%}"><i class="fa-regular fa-paper-plane"></i>&emsp;Enviar Email</a></li>
+                          </ul>
+                        </div>
+                    </div>
+                   </td>
+               </tr>
+               {% endfor %}
+               </tbody>
+           </table>
+       </div>
+       {% endif %}
+       {% if encontradas == 0 %}        
+           <div class="alert alert-danger" role="alert">
+             ¡NO Existen Coincidencias!
+           </div>                   
+       {% endif %}
+
+       {% if messages %}                                              
+       {% for message in messages %}
+         <p {% if message.tags %} class="alert alert-danger" role="alert"{% endif %}>{{ message }}</p>
+       {% endfor %}                        
+ {% endif %}  
+           </div>
+         </div>
+       </div>
+     </div>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "app_seguro/base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %} 
+
+{% block title %} Capresca - CrediSol {% endblock %} 
+    
+{% block subtitulo %} Acceder {% endblock%} 
+
+{% block content %} 
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <h2 class="section-heading mb-5">
+                        <span class="section-heading-upper">Registro de Usuario</span>
+                        <span class="section-heading-upper">Complete todos los Campos</span>
+                        
+                    </h2>
+                    <ul class="list-unstyled list-hours mb-5 mx-auto">
+                    {% if errores %}
+                        <ul class="errors">
+                            {% for campo_errores in errores.values %}
+                                {% for error in campo_errores %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                        <form action="" method="post">
+                           {%  csrf_token %}                                                      
+                           {{ user_creation_form | crispy }} 
+                           <button type="submit" class="btn btn-outline-primary btn-sm">Registrarme</button>
+                        </form>                           
+                    </ul>
+                    <p class="mb-0">                         
+                        <a href="{% url 'index' %}" class="card-link">Inicio</a>
+                        &nbsp; &nbsp; &nbsp;
+                        <a href="{% url 'login' %}" class="card-link">Iniciar Sesión</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>        
+
+{% endblock%} 
+

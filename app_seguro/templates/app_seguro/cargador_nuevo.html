@@ -1,0 +1,52 @@
+{% extends 'app_seguro/base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% block titulo %}Nuevo Cargador{% endblock%}
+
+{% block content %}
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 mx-auto">
+                <div class="cta-inner bg-faded  rounded">
+                    <h2 class="section-heading mb-4">
+                        <span class="section-heading-upper text-center">Registro de Cargadores</span>
+
+                    </h2>
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="card">
+                                <h5 class="card-header">Registrar Nuevo Cargador de Seguros</h5>
+                                <div class="card-body">
+
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <table class="table table-striped table-hover">
+                                            {{formcargador | crispy}}
+                                        </table>
+                                        <button type="submit" class="btn btn-outline-primary btn-sm" title="Graba Nueva Persona">
+                                            <i class="fa fa-floppy-o" aria-hidden="true">Registrar</i>
+                                        </button> &nbsp;&nbsp;
+                                        
+                                        <button onclick="goBack()" class="btn btn-outline-info btn-sm" title="Regresar|Cancelar">Atrás</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+{% endblock %}

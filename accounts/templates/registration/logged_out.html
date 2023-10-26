@@ -1,0 +1,26 @@
+{% extends "app_general/base.html" %}
+
+{% load static %}
+
+{% block title %} Capresca - Seguros {% endblock %} 
+    
+{% block subtitulo %} Cerrar Sesión {% endblock%} 
+
+{% block content %} 
+<section class="page-section clearfix">
+    <div class="container">
+        <div class="intro">
+            <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'assets/img/intro.jpg' %}" alt="..." />
+            <div class="intro-text left-0 text-center bg-faded p-5 rounded">
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper"></span>
+                    <span class="section-heading-lower"></span>
+                    <p class="mb-3">Saliste!!  Haga clic <a href="{% url 'login'%}"> aquí </a> para iniciar sesión de nuevo.</a></p>
+                </h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock%} 
+

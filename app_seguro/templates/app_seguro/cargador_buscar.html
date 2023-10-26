@@ -1,0 +1,108 @@
+{% extends  'app_seguro/base.html' %}
+{%  load static %}
+
+{%  block titulo %} Personas - Busqueda {% endblock %}
+
+{% block content %}
+  <div class="card shadow mb-4">
+     <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Busquedas de Cargadores - Encontradas [{{encontradas}}]</h6>
+            </div>
+            <div class="card-body">
+                <form class="row g-3" method="POST">
+                    {% csrf_token %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="opcion" id="idcargador" value="idcargador">
+                                    <label class="form-check-label" for="idcargador">ID Cargador</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="opcion" id="dni" value="dni" checked>
+                                    <label class="form-check-label" for="dni">D.N.I. u Otro Nro.</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="opcion" id="cuil" value="cuil">
+                                    <label class="form-check-label" for="cuil">CUIL</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="opcion" id="apenom" value="apenom">
+                                    <label class="form-check-label" for="apenom">Apellido - Nombre</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="opcion" id="email" value="email">
+                                    <label class="form-check-label" for="email" >E-Mail</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="opcion" id="gaf" value="gaf">
+                                    <label class="form-check-label" for="gaf">GAF</label>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <label>Ingrese Dato <input type="text" placeholder="Buscar..." name="buscar" value="{{request.POST.buscar}}"> </label>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary mb-3 btn-sm" data-toggle="modal" data-target="#ventana"
+                                        title="Seleccione opción de busqueda e ingrese el dato">Buscar
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                </form>
+                <a href="{% url 'cargador_nuevo' %}" class="btn btn-outline-success btn-sm">Nuevo</a> &nbsp;
+        {% if cargadores %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover"  width="80%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Acción</th>                    
+                    <th>Cargador</th>
+                    <th>Documento</th>
+                    <th>Fecha Nac.</th>
+                    <th>Puede Cargar</th>
+                    <th>CUIL</th>                                        
+                    <th>E-mail</th>                    
+                    <th>Ingreso</th>
+                    <th>Cargador ID</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cargador in cargadores %}
+                <tr>
+                    <td>                        
+                        <a href="{% url 'cargador_detalle' cargador.id %}" class="btn btn-outline-success btn-sm">Información</a>                        
+                    </td>                    
+                    <td> <a href="{% url 'cargador_editar' cargador.id %}" class="btn btn-outline-info btn-sm" title="Editar Datos del Cargador de Seguros"> {{cargador.apellido}}, {{cargador.nombre}}</a></td>
+                    <td>{{cargador.nombredoc}}: {{cargador.nrodoc}} </td>
+                    <td>{{cargador.fecha_nacimiento}}</td>
+                    <td >{% if cargador.activo %} <strong><span style="color: #105CB6;">Si</span> </strong> {% else %} No{% endif %} </td>
+                    <td>{{cargador.cuil}}</td>                                        
+                    <td>{{cargador.email}}</td>                    
+                    <td>{{cargador.created}}</td>
+                    <td>{{cargador.id}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}        
+            <div class="alert alert-danger" role="alert">
+              ¡NO Existen Coincidencias!
+            </div>        
+           
+        {% endif %}
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}
+
+

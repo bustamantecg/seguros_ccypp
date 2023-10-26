@@ -1,0 +1,48 @@
+{% extends "app_seguro/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %} 
+
+{% block title %} Capresca - Editar Perfil {% endblock %} 
+    
+{% block subtitulo %}  {% endblock%} 
+
+{% block content %} 
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-7 mx-auto">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <h2 class="section-heading mb-5">
+                        <span class="section-heading-upper">Datos Perfil de {{request.user.last_name}}, {{request.user.first_name}} </span>                        
+                    </h2>                    
+                    <h2 class="section-heading mb-5 ">                       
+                        <span class="section-heading-upper"> 
+                            {% if errores %}
+                            <ul class="errors">
+                                {% for campo_errores in errores.values %}
+                                    {% for error in campo_errores %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                            
+                            <form method="post">
+                                {% csrf_token %}    
+                                {{form_perfil | crispy}}                                                   
+                                
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Actualizar</button>
+                              </form>
+                        </span>                                               
+                    </h2>
+                    <p class="mb-0">                         
+                        <a href="{% url 'index' %}" class="card-link">Inicio</a>
+                    </p>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>  
+
+{% endblock%} 

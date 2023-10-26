@@ -1,0 +1,79 @@
+{% extends  'webapp/base.html' %}
+{%  load static %}
+{% block titulo %}Capresca - Seguros - Cargadores{% endblock%}
+{% block content %}
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Listado de Cargadores [{{cantidad}}] </h6>
+  </div>
+
+  <div class="card-body">
+      <a href="{% url 'cargador_listado' %}" class="btn btn-primary btn-sm">
+          <i class="fa fa-list" aria-hidden="true"></i> Listar todos</a>
+      &nbsp&nbsp
+      <a href="{% url 'cargador_listado' %}" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#ventana"
+                    title="Permite Registrar un Nuevo Cargador">Agregar</a>
+      <br><br>
+
+      {% if entity %}
+      <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover"  width="80%" cellspacing="0">
+              <thead>
+              <tr>
+                  <th>Cargador ID</th>
+                  <th>Cargador/a</th>
+                  <th>CUIL</th>                                    
+                  <th>Organismo</th>
+                  <th>Oficina</th>
+                  <th>Estado</th>
+                  <th>Inicio</th>
+                  <th>Editado</th>
+
+                  <th colspan="2">Acciones</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for cargador in entity %}
+              <tr>
+                  <td>{{cargador.id}}</td>
+                  <td>{{cargador.apellido}}, {{cargador.nombre}}</td>
+                  <td>{{cargador.cuil}}</td>  
+                  <td>{{cargador.oficinas.organismos.nombre}}</td>  
+                  <td>{{cargador.oficinas.nombre}}</td>  
+                  <td >{% if cargador.activo %} <strong><span style="color: #105CB6;">Si</span> </strong> {% else %}No{% endif %} </td>
+                  
+                  <td>{% if cargador.vive %} Si {% else %} <strong><span style="color: c81d11;">No</span> </strong> {% endif %} </td>                                  
+                  
+                  <td>{{cargador.created|date:"d/m/Y"}}</td>
+                  <td>{{cargador.update|date:"d/m/Y"}}</td>
+                  <td align="center"> <a href="{% url 'cargador_listado' cargador.id %}" class="btn btn-outline-info btn-sm" title="Editar">
+                       <i class="fa fa-pencil fa-fw"></i>
+                      </a> &nbsp;
+                  <td align="center"> <a href="{% url 'cargador_listado' cargador.id %}" class="btn btn-outline-success btn-sm" title="Información">
+                          <i class="fa fa-info-circle" aria-hidden="true"></i>
+                      </a>
+                  </td>
+              </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+          <div>
+              {% include 'webapp/paginator.html' %}
+          </div>
+      </div>
+      {% else %}
+      <h4>NO EXISTEN CARGADORES REGISTRADOS</h4>
+      {% endif %}
+  </div>
+</div>
+
+
+<script>
+  function abrir() {
+    $('#ventana').modal('show');
+  }
+</script>
+
+
+{% endblock %}
